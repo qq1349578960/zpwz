@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% 
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+		+ request.getServerName() + ":" + request.getServerPort()
+		+ path + "/";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head> 
@@ -76,6 +82,7 @@
               height: 40px!important;
               margin: 16px 0 0 30px!important;
             }
+           .bs_pop_alert { margin-left: 12px }
     </style> 
     <script type="text/javascript">
  $.post("ajax.php", {type:"1"}, function(data) {
@@ -111,14 +118,14 @@
                         loginView.find('#topUserEmail').attr('title', text);
                     }
                 };
-                if (userInfo.isLogin) {
-                    loginView.show();
-                    loginView.find('.userShortName').text(userInfo.shortName);
-                    loginView.find('#topUserEmail').attr('title', userInfo.name);
-                }
-                else {
-                    unLoginView.show();
-                }
+               // if (userInfo.isLogin) {
+               //     loginView.show();
+               //     loginView.find('.userShortName').text(userInfo.shortName);
+               //     loginView.find('#topUserEmail').attr('title', userInfo.name);
+               // }
+               // else {
+               //     unLoginView.show();
+               // }
             }
         })
 
@@ -244,98 +251,16 @@
     <!--简历内容 s--> 
     <script type="text/javascript" src="js/jquery.validate.unobtrusive.js"></script> 
     <script type="text/javascript" src="js/jquery.form.min.js"></script> 
-    <script language="javascript" type="text/javascript">
-      $(function () {
-          var form = $('#loginForm').ajaxForm({
-              dataType: 'json',
-              beforeSerialize: function ($form, options) {
-                  var jsonResultHidden = form.find('input:hidden[name=JsonResult]').val(true);
-                  if (!jsonResultHidden.length) {
-                      jsonResultHidden = $('<input type="hidden" name="JsonResult" value="true"/>').appendTo(form);
-                  }
-              },
-              success: function (response, textStatus) {
-                  if (response.Success) {
-                      if (response.RedirectUrl) {
-                          window.location.href = response.RedirectUrl;
-                      } else {
-                          window.location.href = 'test.zhiye.comindex.html';
-                      }
-                  } else {
-
-                      var msgStr = '';
-                      for (var i = 0; i < response.Messages.length; i++) {
-                          msgStr += response.Messages[i] + '\r\n';
-                      }
-
-                      var validator = form.validate();
-                      //var errors = [];
-                      for (var i = 0; i < response.FieldErrors.length; i++) {
-                          var obj = {};
-                          obj[response.FieldErrors[i].FieldName] = response.FieldErrors[i].ErrorMessage;
-                          validator.showErrors(obj);
-                      }
-                  }
-              },
-              error: function (XMLHttpRequest, textStatus, errorThrown) { alert('error'); }
-          });
-      });
-  </script> 
-    <script language="javascript" type="text/javascript">
-    $(function () {
-        var form = $('#loginForm').ajaxForm({
-            dataType: 'json',
-            beforeSerialize: function ($form, options) {
-                var jsonResultHidden = form.find('input:hidden[name=JsonResult]').val(true);
-                if (!jsonResultHidden.length) {
-                    jsonResultHidden = $('<input type="hidden" name="JsonResult" value="true"/>').appendTo(form);
-                }
-            },
-            success: function (response, textStatus) {
-                if (response.Success) {
-                    if (response.RedirectUrl) {
-                        window.location.href = response.RedirectUrl;
-                    } else {
-
-                    }
-                } else {
-                    getImgSrc();
-                    var eleName = response.FieldErrors[0].FieldName;
-                    var errorMsg = response.FieldErrors[0].ErrorMessage;
-                    //console.log(response)
-                    //$(".bs_pop_alert").each(function () {
-                    //    if ($(this).attr('data-valmsg-for') == eleName);
-                    //    $(this).html('<span for="' + eleName + '" generated="true" class="">' + errorMsg + '</span>');
-                    //})
-
-                    //var msgStr = '';
-                    //for (var i = 0; i < response.Messages.length; i++) {
-                    //    msgStr += response.Messages[i] + '\r\n';
-                    //}
-
-                    var validator = form.validate();
-                    //var errors = [];
-                    for (var i = 0; i < response.FieldErrors.length; i++) {
-                        var obj = {};
-                        obj[response.FieldErrors[i].FieldName] = response.FieldErrors[i].ErrorMessage;
-                        validator.showErrors(obj);
-                    }
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) { alert('error'); }
-        });
-    });
-</script> 
-    <style type="text/css"> .bs_pop_alert { margin-left: 12px } </style> 
+    
     <div class="dl_content"> 
      <div class="map"> 
       <div class="dl_lit-wrap clearfix"> 
        <div class="dl_loginleft1"> 
         <h3 class="tit">请登录</h3> 
-        <form id="loginForm" method="post" action="/User/Account/Login"> 
+        <form id="loginForm" method="post" action="login"> 
          <ul class="dl_error_wrap"> 
           <li><span>　用户</span> <input type="text" class="dl_textinp dl_foucs_val" name="user.loginName" id="UserName" placeholder="请输入用户名" data-val-required="必填" /> <span class="field-validation-valid bs_pop_alert" data-valmsg-for="UserName" data-valmsg-replace="true"></span> </li> 
-          <li><span>　密码</span> <input type="password" class="dl_textinp" name="password" id="Password" data-val-required="必填" data-val="true" /> <span class="field-validation-valid bs_pop_alert" data-valmsg-for="Password" data-valmsg-replace="true"></span> </li> 
+          <li><span>　密码</span> <input type="password" class="dl_textinp" name="user.password" id="Password" data-val-required="必填" data-val="true" /> <span class="field-validation-valid bs_pop_alert" data-valmsg-for="Password" data-valmsg-replace="true"></span> </li> 
          </ul> 
          <span class="tishi" style="display:none">请输入正确的用户名和密码</span> 
          <div class="dl_padl40 dl_mgtop10"> 
@@ -360,7 +285,20 @@
     <script language="javascript">
 
         $(function () {
-            
+            if('${result.result}'){
+            	alert('${result.msg}');
+            	var re = '${result.result}';
+            	if(re == '0'){
+            		var type = '${type}';
+            		if(type == '0'){
+            			location.href="<%= basePath%>index";
+            		}else if(type == '1'){
+            			location.href="";
+            		}else if(type == '2'){
+            			location.href="";
+            		}
+            	}
+            }
            
         });
         $(".sina,.qq").click(function () {
@@ -375,28 +313,28 @@
         });
 
         $("#btnLogin").click(function () {
-        	var regex = $(".dl_textinp")        	regex.each(function(index){
-        		var`	 _this = regex.eq(index);
-        		```
+        	var regex = $(".dl_textinp");
+        	var flag = true;
+        	regex.each(function(index){
+        		var _this = regex.eq(index);
+        		var val = _this.val();
+        		if(/^\s*$/.test(val)){
+        			$('.tishi').css("display","inline-block");
+            		flag = false;
+            		return false;
+        		}
         	});
-            $(".dl_foucs_val").blur();
-            $('#loginForm').submit();
-        });
-
-        $(".dl_textinp").blur(function () {
-        	var _this= $(this);
-        	var val = _this.val();
-        	if(/^\s*$/.test(val)){
-        		$('.tishi').css("display","inline-block");
-        		return;
+        	if(flag){
+	            $('#loginForm').submit();
         	}
         });
-        
+
         $(".dl_textinp").focus(function(){
         	var _this= $(this);
         	var val = _this.val();
         	$('.tishi').css("display","none");
         });
+        
         if ($("#IsCheck").is(":checked")) {
             $("#RememberMe").attr("value", "true");
         } else {

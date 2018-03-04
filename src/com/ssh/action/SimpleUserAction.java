@@ -15,6 +15,10 @@ public class SimpleUserAction extends CommonAction {
 	@Autowired
 	private ISimpleUserService simpleUserSerive;
 	
+	@Action(value="index",results={@Result(name="index",location="/index.jsp")})
+	public String index(){
+		return "index";
+	}
 	//≤‚ ‘
 	@Action(value="queryAll",results={@Result(name="all",location="/all.jsp")})
 	public String all(){

@@ -5,6 +5,7 @@ package com.ssh.action;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import com.opensymphony.xwork2.ActionSupport;
 import com.ssh.bean.User;
 import com.ssh.service.ICommonService;
+import com.ssh.util.ResultObj;
 @Controller
 @ParentPackage("struts-default")
 public class CommonAction extends ActionSupport implements ServletRequestAware,ServletResponseAware, ServletContextAware{
@@ -56,26 +58,67 @@ public class CommonAction extends ActionSupport implements ServletRequestAware,S
 
 	private User user;
 	
+	private ResultObj result;
+	
 	@Autowired
 	ICommonService commonService;
 	
+	/**
+	 * 进入登录页面
+	 * @return
+	 */
+	@Action(value="gotoLogin",results={@Result(name="login",location="/login.jsp")})
+	public String loginPage(){
+		System.out.println("进入登录页面 ");
+		return "login";
+	}
+	
+	/**
+	 * 登录执行
+	 * @return
+	 */
+	/**
+	 * @return
+	 */
 	@Action(
 			value="login",
 			results={
-				@Result(name="succ",location="/succ.jsp"),
-				@Result(name="fail",location="/fail.jsp")
+				@Result(name="loginResult",location="/login.jsp"),
 			})
 	public String login(){
+		result = new ResultObj();
+		if(user ==null){
+			result.setMsg("用户名或密码不能为空");
+			result.setResult("1");
+			request.setAttribute("result", result);
+			return "loginResult";
+		}
+		
+		String flag =null;
+		String msg = null;
 		User u=commonService.login(user.getLoginName(), user.getPassword());
-		context.setAttribute("aa", "what????");
-		request.setAttribute("bbb", "how???");
-		request.getSession().setAttribute("ddd", "who???");
 		if(null != u){
-			return "succ";
+			flag = "0";
+			msg = "登录成功";
+			HttpSession session = request.getSession();
+			session.setAttribute("userName", u.getLoginName());
+			session.setMaxInactiveInterval(10*60);
+		}else{
+			flag = "1";
+			msg = "账号或密码错误";
 		}
-		else{
-			return "fail";
+		
+		String type = u.getUserType();
+		if(type == null){
+			flag = "1";
+			msg = "账户异常，请重试";
+		}else{
+			request.setAttribute("type", type);
 		}
+		result.setMsg(msg);
+		result.setResult(flag);
+		request.setAttribute("result", result);
+		return "loginResult";
 	}
 	public User getUser() {
 		return user;
@@ -89,5 +132,4 @@ public class CommonAction extends ActionSupport implements ServletRequestAware,S
 	public void setCommonService(ICommonService commonService) {
 		this.commonService = commonService;
 	}
-	
 }
