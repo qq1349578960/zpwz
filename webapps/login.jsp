@@ -266,7 +266,7 @@
        <div class="dl_loginright1"> 
         <div class="dl_register">
          <span class="noaccount">没有自己的账号？</span>
-         <a href="#" url="/Portal/Account/Register?returnUrl=%2fPortal%2fApply%2fIndex" class="register">立刻注册</a>
+         <a href="registered" >立刻注册</a>
         </div> 
         <h3 class="dl_otherchoice">使用其他账号登录：</h3> 
         <div class="dl_logos"> 

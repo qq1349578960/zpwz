@@ -25,4 +25,19 @@ public class CommonService implements ICommonService {
 		this.commonDao = commonDao;
 	}
 
+	@Override
+	public String userNameValidation(String userName) {
+		User user = commonDao.userNameValidation(userName);
+		if(user!=null){
+			return "已存在";
+		}
+		return "可用";
+	}
+
+	@Override
+	public String registeredUser(User user) {
+		
+		return commonDao.registeredUser(user);
+	}
+
 }

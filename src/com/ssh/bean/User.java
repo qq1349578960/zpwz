@@ -17,6 +17,7 @@ public class User {
 	@Column(name="login_name")
 	private String loginName;
 	
+	@Column(name="password")
 	private String password;
 	
 	@Column(name="user_type")

@@ -2,6 +2,8 @@ package com.ssh.action;
 /**
  * 公共action
  */
+import java.util.ArrayList;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -131,6 +133,64 @@ public class CommonAction extends ActionSupport implements ServletRequestAware,S
 		request.setAttribute("result", result);
 		return "index";
 	}
+	
+	
+	/**
+	 * 进入注册
+	 * @return
+	 */
+	@Action(value="registered",results={@Result(name="reg",location="/reg.jsp")})
+	public String registered(){
+		return "reg";
+	}
+	
+	
+	/**
+	 * 验证账号是否重复
+	 * @return
+	 */
+
+
+	
+	private String inf;
+	
+	public String getInf() {
+		return inf;
+	}
+	public void setInf(String inf) {
+		this.inf = inf;
+	}
+	
+	@Action(value="userNameValidation",results={
+			@Result(type="json",params={"root","inf"})
+	})
+	public String selfInfo(){
+		inf=commonService.userNameValidation(user.getLoginName());
+		return SUCCESS;
+	}
+	
+	private String userInfo;
+	
+	public String getUserInfo() {
+		return userInfo;
+	}
+	public void setUserInfo(String userInfo) {
+		this.userInfo = userInfo;
+	}
+	
+	/**
+	 * 注册用户
+	 * @return
+	 */
+	@Action(value="registeredUser",results={
+			@Result(type="json",params={"root","userInfo"})
+	})
+	public String registeredUser(){
+		userInfo=commonService.registeredUser(user);
+		return SUCCESS;
+	}
+	
+	
 	
 	public User getUser() {
 		return user;
