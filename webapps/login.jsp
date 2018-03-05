@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<% 
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-		+ request.getServerName() + ":" + request.getServerPort()
-		+ path + "/";
-%>
+<%@ include file="base.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head> 
@@ -312,6 +307,14 @@
             return false;
         });
 
+        //绑定键盘事件
+        $(document).keydown(function(event){
+        	if(event.keyCode == 13){
+        		$("#btnLogin").click();
+        	}
+        });
+        
+        //登录
         $("#btnLogin").click(function () {
         	var regex = $(".dl_textinp");
         	var flag = true;

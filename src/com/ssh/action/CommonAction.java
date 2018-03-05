@@ -21,7 +21,7 @@ import com.ssh.bean.User;
 import com.ssh.service.ICommonService;
 import com.ssh.util.ResultObj;
 @Controller
-@ParentPackage("struts-default")
+@ParentPackage("json-default")
 public class CommonAction extends ActionSupport implements ServletRequestAware,ServletResponseAware, ServletContextAware{
 	private static final long serialVersionUID = 1L;
 	protected HttpServletRequest request;
@@ -77,9 +77,6 @@ public class CommonAction extends ActionSupport implements ServletRequestAware,S
 	 * 登录执行
 	 * @return
 	 */
-	/**
-	 * @return
-	 */
 	@Action(
 			value="login",
 			results={
@@ -120,6 +117,21 @@ public class CommonAction extends ActionSupport implements ServletRequestAware,S
 		request.setAttribute("result", result);
 		return "loginResult";
 	}
+	
+	/**
+	 * 退出
+	 * @return
+	 */
+	@Action(value="logout",results={@Result(name="index",location="/index.jsp")})
+	public String logout(){
+		result = new ResultObj();
+		HttpSession session = request.getSession();
+		session.invalidate();
+		result.setMsg("成功退出 ");
+		request.setAttribute("result", result);
+		return "index";
+	}
+	
 	public User getUser() {
 		return user;
 	}

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="base.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head> 
@@ -57,15 +58,21 @@
     <div class="bs-module"> 
      <div class="login-link "> 
       <div class="login-hearder"> 
-       <ul class="header-login" style="display:none"> 
-        <li class="welcome"><span><span class="userName" style="float:none"></span>，欢迎您！</span></li> 
-        <li class="PortalIndex"><a href="member_apply.html"><span>个人中心</span></a></li> 
-        <li class="LogoutUrl"><a href="/User/Account/LogOut"><span>退出</span></a></li> 
-       </ul> 
-       <ul class="header-unLogin" style="display:none"> 
-        <li><a class="loginlink" href="/Portal/Account/Login?returnUrl=%2Fhome"> <span>登录</span> </a></li> 
-        <li><a class="reglink" href="/Portal/Account/Register?returnUrl=%2Fhome"><span> 注册</span></a></li> 
-       </ul> 
+       <c:choose>
+       	<c:when test="${!empty sessionScope.userName}">
+	       	<ul class="header-login"> 
+	        <li class="welcome"><span><span class="userName" style="float:none"></span>${sessionScope.userName}，欢迎您！</span></li> 
+	        <li class="PortalIndex"><a href="<%= basePath%>personal"><span>个人中心</span></a></li> 
+	        <li class="LogoutUrl"><a href="<%= basePath%>logout"><span>退出</span></a></li> 
+	       	</ul> 
+       	</c:when>
+       	<c:otherwise>
+	        <ul class="header-unLogin"> 
+		        <li><a class="loginlink" href="<%= basePath%>gotoLogin"> <span>登录</span> </a></li> 
+		        <li><a class="reglink" href="<%= basePath%>"><span> 注册</span></a></li> 
+	        </ul> 
+       	</c:otherwise>
+       </c:choose>
       </div> 
     <script type="text/javascript">
  $.post("ajax.php", {type:"1"}, function(data) {
@@ -83,15 +90,6 @@
      </div> 
     </div> 
     <!--module:login end-->
-    <!--module:internalrecommend begin--> 
-    <div class="bs-module"> 
-     <div class="internalrecommend-default "> 
-      <div class="internaldiv"> 
-       <a class="internal" href="http://www.htmlsucai.com" target="_blank">内部推荐专区</a> 
-      </div> 
-     </div> 
-    </div> 
-    <!--module:internalrecommend end--> 
    </div> 
   </div> 
   <div class="nav"> 
@@ -367,6 +365,9 @@
      </div> 
      <script type="text/javascript">
     $(function() {
+    	if("${!empty result}" == "true"){
+    		alert('${result.msg}')
+    	}
         loadData();
 
         function loadData() {
