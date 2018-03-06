@@ -262,7 +262,7 @@
 										});
 	    						} else {
 	    							//出错  
-	    							layer.alert(json.head.msg, {
+	    							layer.alert(json, {
 	    								skin : 'layui-layer-lan' //样式类名
 	    								,
 	    								closeBtn : 0
@@ -309,7 +309,7 @@
        <div class="dl_loginright width170"> 
         <div class="dl_register">
          <span class="noaccount">已有账号？</span>
-         <a href="/Portal/Account/Login">点击登录</a>
+         <a href="gotoLogin">点击登录</a>
         </div> 
        </div> 
       </div> 
