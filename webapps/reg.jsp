@@ -6,11 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>注册</title>
   <!--引用静态文件:skin_default--> 
+  <link rel="stylesheet" href="js/layer/mobile/need/layer.css"> 
   <link href="css/common.css" rel="stylesheet" type="text/css" />
   <link href="css/templateform.css" rel="stylesheet" type="text/css" />
   <link href="css/controls.css" rel="stylesheet" type="text/css" />
   <link href="css/default.css" rel="stylesheet" type="text/css" />
-  <link href="css/school-select-v2.css" rel="stylesheet" type="text/css" /> 
+  <link href="css/school-select-v2.css" rel="stylesheet" type="text/css" />
   <!--引用静态文件:skin_new_css--> 
   <link href="css/main.css" rel="stylesheet" type="text/css" /> 
 
@@ -98,6 +99,7 @@
          </li>
          </ul>
          <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+         <script type="text/javascript" src="js/layer/layer.js"></script>
          <script type="text/javascript">
         
          userType=$("#userType").val();
@@ -250,7 +252,14 @@
 	    					success : function(json) {
 	                          
 	    						if (json == '成功') {
-	     								alert(json);
+	    							
+										var alertIndex=layer.alert(json, {
+											skin : 'layui-layer-lan' //样式类名
+											,
+											closeBtn : 0
+										},function(){
+											window.location.href='gotoLogin';
+										});
 	    						} else {
 	    							//出错  
 	    							layer.alert(json.head.msg, {

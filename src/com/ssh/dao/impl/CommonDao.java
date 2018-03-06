@@ -3,6 +3,7 @@ package com.ssh.dao.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -53,10 +54,15 @@ public class CommonDao implements ICommonDao{
 	public String registeredUser(User user) {
 		//需要修改
 		Session session = sessionFactory.openSession();
-		Transaction beginTransaction = session.beginTransaction();
-		   session.save(user);              
-		   beginTransaction.commit();  
-           	//session.close();   
+		   
+		StringBuffer  buffer=new StringBuffer(128);  
+        buffer.append(" insert  into user_info(login_name,password,user_type) values(?,?,?)" );  
+        String sql = buffer.toString();  
+        Query  query = session.createSQLQuery(sql);  
+        query.setParameter(0, user.getLoginName());  
+        query.setParameter(1, user.getPassword());  
+        query.setParameter(2, user.getUserType());  
+        query.executeUpdate();
 		return "成功";
 	}
 
